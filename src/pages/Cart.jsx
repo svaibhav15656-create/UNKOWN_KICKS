@@ -1,15 +1,8 @@
 import React, { useState } from 'react';
 import { api } from '../api';
 import { Trash2, CreditCard, MapPin, Loader, ShoppingBag, ArrowRight } from 'lucide-react';
+import { getProductImage } from '../productImages';
 
-const PRODUCT_IMAGES = {
-  'Running Shoes': '/images/sneaker_core_black.png',
-  'Cotton T-Shirt': '/images/apparel_hoodie.png',
-  'Denim Jeans': '/images/apparel_hoodie.png',
-  'Backpack': '/images/sneaker_sand_beige.png',
-  'MAnforce condoms': '/images/sneaker_sand_beige.png',
-  'condoms': '/images/sneaker_core_black.png'
-};
 
 const DEFAULT_IMAGE = '/images/sneaker_sand_beige.png';
 
@@ -19,9 +12,7 @@ export default function Cart({ cartItems, onUpdateQuantity, onRemoveItem, onClea
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
 
-  const getProductImage = (prod) => {
-    return PRODUCT_IMAGES[prod.name] || DEFAULT_IMAGE;
-  };
+ 
 
   const calculateSubtotal = () => {
     return cartItems.reduce((acc, item) => acc + (item.product.price || 0) * item.quantity, 0);

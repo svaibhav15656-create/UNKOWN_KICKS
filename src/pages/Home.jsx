@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { api } from '../api';
 import { Search, ChevronRight, ShoppingCart, Info, Loader } from 'lucide-react';
-
+import { getProductImage } from '../productImages';
 const CATEGORIES = ['All', 'Sneakers', 'Apparel', 'Accessories', 'New Drops', 'Limited Edition'];
 
 const CATEGORY_MAP = {
@@ -14,16 +14,7 @@ const CATEGORY_MAP = {
 };
 
 // Static mapping of product IDs or names to our generated premium assets for visual excellence
-const PRODUCT_IMAGES = {
-  'Running Shoes': '/images/sneaker_core_black.png',
-  'Cotton T-Shirt': '/images/apparel_hoodie.png',
-  'Denim Jeans': '/images/apparel_hoodie.png',
-  'Backpack': '/images/sneaker_sand_beige.png',
-  'MAnforce condoms': '/images/sneaker_sand_beige.png',
-  'condoms': '/images/sneaker_core_black.png'
-};
 
-const DEFAULT_IMAGE = '/images/sneaker_sand_beige.png';
 
 export default function Home({ onSelectProduct, onAddToCart }) {
   const [products, setProducts] = useState([]);
@@ -99,9 +90,7 @@ export default function Home({ onSelectProduct, onAddToCart }) {
     }
   };
 
-  const getProductImage = (product) => {
-    return PRODUCT_IMAGES[product.name] || DEFAULT_IMAGE;
-  };
+
 
   return (
     <div className="home-wrapper">

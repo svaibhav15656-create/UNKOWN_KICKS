@@ -1,15 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { api } from '../api';
 import { ShoppingCart, ArrowLeft, ShieldAlert, Loader } from 'lucide-react';
+import { getProductImage } from '../productImages';
 
-const PRODUCT_IMAGES = {
-  'Running Shoes': '/images/sneaker_core_black.png',
-  'Cotton T-Shirt': '/images/apparel_hoodie.png',
-  'Denim Jeans': '/images/apparel_hoodie.png',
-  'Backpack': '/images/sneaker_sand_beige.png',
-  'MAnforce condoms': '/images/sneaker_sand_beige.png',
-  'condoms': '/images/sneaker_core_black.png'
-};
 
 const DEFAULT_IMAGE = '/images/sneaker_sand_beige.png';
 
@@ -37,10 +30,7 @@ export default function ProductDetail({ productId, onBack, onAddToCart }) {
     }
   };
 
-  const getProductImage = (prod) => {
-    if (!prod) return DEFAULT_IMAGE;
-    return PRODUCT_IMAGES[prod.name] || DEFAULT_IMAGE;
-  };
+  
 
   if (loading) {
     return (
@@ -85,7 +75,7 @@ export default function ProductDetail({ productId, onBack, onAddToCart }) {
             flex-direction: column;
             align-items: center;
           }
-          .error-icon {
+         .error-icon {
             color: var(--danger);
             margin-bottom: 1.5rem;
           }

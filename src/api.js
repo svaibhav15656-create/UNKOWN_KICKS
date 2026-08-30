@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://localhost:9000';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:9000';
 
 // Helper to get auth headers
 function getHeaders(authRequired = true) {
@@ -63,7 +63,6 @@ export const api = {
       throw new Error(err.message || 'Registration failed');
     }
     const data = await res.json();
-    // Register returns { token: ... }
     localStorage.setItem('accessToken', data.token);
     return parseJwt(data.token);
   },
@@ -157,15 +156,12 @@ export const api = {
   },
 
   async deleteProduct(id) {
-    // Delete product endpoint passes custom header validation on backend
-    const token = localStorage.getItem('accessToken');
-    const claims = parseJwt(token);
+    // NOTE: role is enforced server-side by the gateway from the validated JWT.
+    // We intentionally do NOT send a client-supplied X-User-Role header here —
+    // trusting a client-set role header would let any user grant themselves ADMIN.
     const res = await fetch(`${API_BASE_URL}/api/products/${id}`, {
       method: 'DELETE',
-      headers: {
-        ...getHeaders(true),
-        'X-User-Role': claims?.role || ''
-      },
+      headers: getHeaders(true),
     });
     if (res.status === 403) throw new Error('Forbidden: Admin access required');
     if (!res.ok) throw new Error('Failed to delete product');
