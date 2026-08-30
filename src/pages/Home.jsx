@@ -25,14 +25,15 @@ export default function Home({ onSelectProduct, onAddToCart }) {
 
   // Hero Sneaker details
   const [heroSlide, setHeroSlide] = useState(0);
-  const heroSneakers = [
+    const heroSneakers = [
     {
       title: 'DISRUPT',
       subtitle: 'THE PURE COMFORT IS HERE.',
       name: 'CORE BLACK RACER',
       image: '/images/sneaker_core_black.png',
       productId: 6, // Running Shoes in database
-      colorName: 'CORE BLACK / LEAD GREY'
+      colorName: 'CORE BLACK',
+      dropDate: '29.07.18'
     },
     {
       title: 'EVOLVE',
@@ -40,7 +41,8 @@ export default function Home({ onSelectProduct, onAddToCart }) {
       name: 'SAND BEIGE RUNNER',
       image: '/images/sneaker_sand_beige.png',
       productId: 12, // Backpack or fallback
-      colorName: 'SAND BEIGE / OFF WHITE'
+      colorName: 'SAND BEIGE',
+      dropDate: '14.03.19'
     }
   ];
 
@@ -98,7 +100,7 @@ export default function Home({ onSelectProduct, onAddToCart }) {
       <div className="bg-radial-lines"></div>
 
       {/* 1. HERO SECTION (Reskinned Adidas reference) */}
-      <section className="hero-section">
+            <section className="hero-section">
         {/* Pagination Dots on Right Side */}
         <div className="hero-pagination-side">
           {heroSneakers.map((_, index) => (
@@ -114,32 +116,43 @@ export default function Home({ onSelectProduct, onAddToCart }) {
         <div className="hero-grid container">
           <div className="hero-content-col">
             <span className="hero-mini-tag">{currentHero.subtitle}</span>
-            
-            {/* Massive backdrop typography */}
-            <div className="hero-backdrop-title">
-              {currentHero.title}
+
+            {/* Big wordmark with sneaker layered on top */}
+            <div className="hero-headline-stage">
+              <h1 className="hero-backdrop-title">{currentHero.title}</h1>
+              <div className="hero-sneaker-container">
+                <img 
+                  src={currentHero.image} 
+                  alt={currentHero.name}
+                  className="hero-sneaker-img" 
+                />
+              </div>
             </div>
 
-            {/* Sneaker floating image */}
-            <div className="hero-sneaker-container">
-              <img 
-                src={currentHero.image} 
-                alt={currentHero.name}
-                className="hero-sneaker-img" 
-              />
-            </div>
+            <span className="hero-drop-date">{currentHero.dropDate}</span>
 
             {/* Bottom slides and indicators */}
             <div className="hero-footer-bar">
               <div className="slide-counter">
-                <span className="active-num">0{heroSlide + 1}</span>
-                <span className="divider">/</span>
-                <span className="total-num">0{heroSneakers.length}</span>
+                <button
+                  className={`slide-num-btn ${heroSlide === 0 ? 'active' : ''}`}
+                  onClick={() => setHeroSlide(0)}
+                >
+                  01
+                </button>
+                {heroSneakers.length > 1 && (
+                  <button
+                    className={`slide-num-btn ${heroSlide === 1 ? 'active' : ''}`}
+                    onClick={() => setHeroSlide(1)}
+                  >
+                    02
+                  </button>
+                )}
               </div>
 
               <div className="hero-actions">
                 <button 
-                  className="btn btn-secondary"
+                  className="btn hero-reserve-btn"
                   onClick={() => onSelectProduct(currentHero.productId)}
                 >
                   Reserve Now
@@ -150,7 +163,6 @@ export default function Home({ onSelectProduct, onAddToCart }) {
               </div>
 
               <div className="colorway-tag">
-                <span className="colorway-label">COLORWAY</span>
                 <span className="colorway-name">{currentHero.colorName}</span>
               </div>
             </div>
@@ -283,7 +295,7 @@ export default function Home({ onSelectProduct, onAddToCart }) {
           position: relative;
         }
 
-        /* Hero styles */
+                /* Hero styles */
         .hero-section {
           min-height: 90vh;
           display: flex;
@@ -330,41 +342,47 @@ export default function Home({ onSelectProduct, onAddToCart }) {
           width: 100%;
           display: flex;
           flex-direction: column;
+          align-items: center;
           justify-content: space-between;
           min-height: 550px;
+          text-align: center;
         }
 
         .hero-mini-tag {
           font-size: 0.85rem;
           font-weight: 800;
-          letter-spacing: 0.2em;
+          letter-spacing: 0.3em;
           text-transform: uppercase;
-          color: var(--accent);
-          margin-bottom: 1rem;
+          color: var(--text-primary);
+          margin-bottom: 1.5rem;
+        }
+
+        .hero-headline-stage {
+          position: relative;
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex: 1;
         }
 
         .hero-backdrop-title {
-          font-size: 15vw;
+          font-size: 11vw;
           font-weight: 900;
-          line-height: 0.8;
-          letter-spacing: -0.03em;
-          color: transparent;
-          -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.05);
-          background: linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0) 100%);
-          -webkit-background-clip: text;
-          background-clip: text;
-          user-select: none;
-          pointer-events: none;
+          line-height: 0.85;
+          letter-spacing: -0.02em;
+          color: var(--accent);
           text-align: center;
+          margin: 0;
         }
 
         .hero-sneaker-container {
           position: absolute;
-          top: 40%;
+          top: 50%;
           left: 50%;
           transform: translate(-50%, -50%);
           width: 100%;
-          max-width: 600px;
+          max-width: 560px;
           display: flex;
           justify-content: center;
           align-items: center;
@@ -379,6 +397,13 @@ export default function Home({ onSelectProduct, onAddToCart }) {
           animation: float 6s ease-in-out infinite;
         }
 
+        .hero-drop-date {
+          font-size: 0.85rem;
+          letter-spacing: 0.3em;
+          color: var(--text-muted);
+          margin: 1.5rem 0;
+        }
+
         .hero-footer-bar {
           display: flex;
           align-items: center;
@@ -391,29 +416,43 @@ export default function Home({ onSelectProduct, onAddToCart }) {
         }
 
         .slide-counter {
-          font-size: 1.1rem;
-          font-weight: 700;
           display: flex;
           align-items: center;
-          gap: 0.4rem;
+          gap: 1.5rem;
         }
 
-        .slide-counter .active-num {
-          color: var(--accent);
-        }
-
-        .slide-counter .divider {
+        .slide-num-btn {
+          background: none;
+          border: none;
           color: var(--text-muted);
+          font-size: 0.95rem;
+          font-weight: 700;
+          letter-spacing: 0.05em;
+          padding-bottom: 0.4rem;
+          border-bottom: 2px solid transparent;
+          transition: all 0.3s ease;
         }
 
-        .slide-counter .total-num {
-          color: var(--text-secondary);
+        .slide-num-btn.active {
+          color: var(--text-primary);
+          border-bottom-color: var(--accent);
         }
 
         .hero-actions {
           display: flex;
           align-items: center;
           gap: 1.5rem;
+        }
+
+        .hero-reserve-btn {
+          background-color: rgba(255, 255, 255, 0.08);
+          color: var(--text-primary);
+          border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .hero-reserve-btn:hover {
+          background-color: rgba(255, 255, 255, 0.14);
+          transform: translateY(-2px);
         }
 
         .hero-learn-btn {
@@ -423,21 +462,15 @@ export default function Home({ onSelectProduct, onAddToCart }) {
 
         .colorway-tag {
           display: flex;
-          flex-direction: column;
-          align-items: flex-end;
-        }
-
-        .colorway-label {
-          font-size: 0.75rem;
-          font-weight: 800;
-          color: var(--text-muted);
-          letter-spacing: 0.1em;
+          align-items: center;
         }
 
         .colorway-name {
           font-size: 0.9rem;
-          font-weight: 700;
-          color: var(--text-primary);
+          font-weight: 800;
+          letter-spacing: 0.15em;
+          color: var(--accent);
+          text-transform: uppercase;
         }
 
         /* Catalog styles */
